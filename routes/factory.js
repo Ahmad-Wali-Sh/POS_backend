@@ -47,7 +47,32 @@ MODELS.forEach((model) => {
             data: newItem
         })
     }
-    catch (erorr) { errorHandler(erorr, res) }
+    catch (erorr) { errorHandler(erorr, res) }  
+})
+
+    // Edit
+    app.put(`/${model.route}/:id`, async (req, res) => {
+    try {
+        const id = req.params.id
+        const editItem = req.body
+        const keys = Object.keys(editItem)
+        const fields = keys.map((key, index) => {
+            return `${key} = $${index + 1}`
+        }).join(',')
+        const values = Object.values(editItem)
+
+        await pool.query(`
+                UPDATE ${model.table} SET
+                ${fields}
+                WHERE id = ${id}
+            `, values)
+
+        res.json({
+            message: 'DATA Recorded Succesfully',
+            data: editItem
+        })
+    }
+    catch (erorr) { errorHandler(erorr, res) }  
 })
 
 })
