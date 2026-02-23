@@ -7,11 +7,13 @@ const { default: chalk } = require('chalk')
 const PORT = process.env.PORT
 const healthRoute = require('./routes/healthRoute')
 const productRoutes = require('./routes/productRoute')
+const factoryRoutes = require('./routes/factory')
 
 app.use(express.json())
 app.use(cors())
 app.use('', healthRoute)
 app.use('/api', productRoutes)
+app.use('/api', factoryRoutes)
 
 app.listen(PORT || 8000, () => {
     console.log(chalk.bgGreen(`Server is Running On Port: ${PORT}`))
