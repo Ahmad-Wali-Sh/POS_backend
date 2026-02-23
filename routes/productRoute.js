@@ -58,4 +58,22 @@ app.put('/products/:id', async (req, res) => {
     catch (erorr) { errorHandler(erorr, res) }
 })
 
+app.get('/products/:id', async (req, res) => {
+    try {
+     const id = req.params.id
+     const data = await pool.query(`SELECT * FROM products WHERE id = $1`, [id])
+     res.json(data.rows)   
+    }
+    catch (erorr) { errorHandler(erorr, res) }
+})
+
+app.delete('/products/:id', async (req, res) => {
+    try {
+     const id = req.params.id
+     await pool.query(`DELETE FROM products WHERE id = $1`, [id])
+     res.json({message: 'Record Has Been Deleted Succesfully.'})   
+    } 
+    catch (erorr) { errorHandler(erorr, res) }
+})
+
 module.exports = app
