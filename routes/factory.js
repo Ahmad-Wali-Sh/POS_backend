@@ -19,6 +19,21 @@ const MODELS = [
         route: 'users',
         table: 'users',
         fields: ['username', 'password', 'fullname', 'image', 'bio']
+    },
+    {
+        route: 'categories',
+        table: 'categories',
+        fields: ['name', 'description']
+    },
+    {
+        route: 'sale-transactions',
+        table: 'saleTransaction',
+        fields: ['customer_id', 'subtotal', 'discount', 'payable_amount', 'isPaid']
+    },
+    {
+        route: 'sale-items',
+        table: 'saleItem',
+        fileds: ['sale_id', 'product_id','each_price','quantity', 'discount', 'total']
     }
 ]
 
