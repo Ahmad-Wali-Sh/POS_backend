@@ -33,7 +33,7 @@ const MODELS = [
     {
         route: 'sale-items',
         table: 'saleItem',
-        fileds: ['sale_id', 'product_id','each_price','quantity', 'discount', 'total']
+        fields: ['sale_id', 'product_id','each_price','quantity', 'discount', 'total']
     }
 ]
 
@@ -59,12 +59,12 @@ MODELS.forEach((model) => {
             await
                 pool.query(
                     `INSERT INTO ${model.table} (${fields}) 
-                VALUES                (${values});
+                VALUES (${values});
                 `, data)
-
+            const item = await pool.query(`SELECT * FROM ${model.table} ORDER BY id DESC LIMIT 1;`)
             res.json({
                 message: 'DATA Recorded Succesfully',
-                data: newItem
+                data: item?.rows[0]
             })
         }
         catch (erorr) { errorHandler(erorr, res) }
