@@ -33,7 +33,7 @@ const MODELS = [
     {
         route: 'sale-items',
         table: 'saleItem',
-        fields: ['sale_id', 'product_id','each_price','quantity', 'discount', 'total']
+        fields: ['sale_id', 'product_id', 'each_price', 'quantity', 'discount', 'total']
     }
 ]
 
@@ -51,16 +51,17 @@ MODELS.forEach((model) => {
     app.post(`/${model.route}`, async (req, res) => {
         try {
             const newItem = req.body
-            const fields = model.fields.join(',')
-            const values = model.fields.map((_, index) => {
+            const fields = Object.keys(newItem).join(', ')
+            const values = Object.keys(newItem).map((_, index) => {
                 return `$${index + 1}`
             }).join(',')
-            const data = Object.values(newItem)
+            const valueParameters = Object.values(newItem)
             await
-                pool.query(
-                    `INSERT INTO ${model.table} (${fields}) 
-                VALUES (${values});
-                `, data)
+                pool.query(`
+                    INSERT INTO ${model.table} (${fields}) 
+                    VALUES (${values});
+                `, 
+                valueParameters)
             const item = await pool.query(`SELECT * FROM ${model.table} ORDER BY id DESC LIMIT 1;`)
             res.json({
                 message: 'DATA Recorded Succesfully',
@@ -105,14 +106,14 @@ MODELS.forEach((model) => {
         }
         catch (erorr) { errorHandler(erorr, res) }
     })
-    
+
     app.delete(`/${model.route}/:id`, async (req, res) => {
         try {
             const id = req.params.id
             await pool.query(`DELETE FROM ${model.table} WHERE id = $1`, [id])
-            res.json({message: 'Record Deleted Succesfully.'})    
+            res.json({ message: 'Record Deleted Succesfully.' })
         }
-        catch (erorr) { errorHandler(erorr, res) }      
+        catch (erorr) { errorHandler(erorr, res) }
     })
 })
 
