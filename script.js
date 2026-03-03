@@ -9,6 +9,7 @@ const healthRoute = require('./routes/healthRoute')
 const factoryRoutes = require('./routes/factory')
 
 app.use(express.json())
+app.use(express.static('public'))
 app.use(cors())
 app.use('', healthRoute)
 app.use('/api', factoryRoutes)
